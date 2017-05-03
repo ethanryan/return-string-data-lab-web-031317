@@ -1,1 +1,39 @@
+<h1>Products Index Page</h1>
 
+<!-- copying above -->
+
+<% @products.each do |product| %>
+  <%= render partial: "product", locals: {product: product} %>
+<% end %>
+
+<!-- Create an index page for all products that displays name
+and a truncated description, but not inventory. -->
+
+  <!-- <% @products.each do |product| %>
+  <strong>Product Name:</strong> <%= product.name %><br>
+  <strong>Product Description:</strong> <%= truncate(product.description) %><br><br>
+  <% end %> -->
+
+  <script type="text/javascript" charset="utf-8">
+
+$(function () {
+  $(".js-more").on('click', function() {
+    var id = $(this).data("id");
+    $.get("/products/" + id + "/description", function(data) {
+      $("#product-" + id).text(data);
+    });
+    $.get("/products/" + id + "/inventory", function(data) {
+      console.log("inventory data: " + data);
+
+      if (data === "true") {
+        data = "Available";
+      } else {
+        data = "Sold Out";
+      }
+
+      $("#product-" + id).append("<br>" + data); //appending inventory to description
+    });
+  });
+});
+
+</script>
